@@ -19,10 +19,10 @@ A brief description of what the project does.
 
 ## Usage
 
-    1. When data locates in single class.
+    //1. When data locates in single class.
     
-        a. Create base class where your data locates.
-            ```csharp
+        //a. Create base class where your data locates.
+             
                 using System; 
 
                 namespace GeneriTree
@@ -36,8 +36,8 @@ A brief description of what the project does.
                     }
                 }
         
-        b. Create target class for tree view. !NOTE! its importent to have target class Lits proerty of itself!
-            ```csharp
+        //b. Create target class for tree view. !NOTE! its importent to have target class Lits proerty of itself!
+            
                 using System; 
 
                 namespace GeneriTree
@@ -52,21 +52,21 @@ A brief description of what the project does.
                     }
                 } 
 
-            When we generate tree based on this class, children of parents will be located in 
-                ```csharp
+            // When we generate tree based on this class, children of parents will be located in 
+              
                     public List<TargetClass> Children {get;set;}
-            property
+            //property
 
-        c. We have a list of data with SourceClass.
-            ```csharp
+        //c. We have a list of data with SourceClass.
+             
                 List<SourceClass> sourceClassList = new();
 
-        d. We need to create Key-Value Dictionary for properties. If there are differently named ones in both class. for example:
-            We have Source_Id in SourceClass and  Target_Id in TargetClass, but we need Source_Id meaning for Target_Id
+        //d. We need to create Key-Value Dictionary for properties. If there are differently named ones in both class. for example:
+           // We have Source_Id in SourceClass and  Target_Id in TargetClass, but we need Source_Id meaning for Target_Id
 
-            Lets create dictionary for Id and other props:
+            //Lets create dictionary for Id and other props:
 
-            ```csharp
+          
                 var propsDictionary = new Dictionary<string, string>()
                     {
                         {"Source_Id", "Target_Id"},
@@ -74,29 +74,29 @@ A brief description of what the project does.
                         {"Source_IsActive", "Target_IsActive" }
                     };
 
-        e. After that call Convert method from GeneriTree:
-            ```csharp
+        //e. After that call Convert method from GeneriTree:
+           
                 List<TargetClass> transformedSourceClass = (List<TargetClass>)DataTreeGenerator.TranformObject<SourceClass,TargetClass>(sourceClassList, propsDictionary);
 
-        f. Finally, when we have data which is suitable for our tree generator.
+        //f. Finally, when we have data which is suitable for our tree generator.
 
-            ```csharp
+        
                 var tree = GeneriTree.TreeBuilder.GenerateMultilevelTree.Generate<TargetClass>(
-                transformedSourceClass,
-                transformedSourceClass => transformedSourceClass.Target_Id,
-                transformedSourceClass => transformedSourceClass.Target_ParentId,
-                (transformedSourceClass, children) => transformedSourceClass.Children = children
-                );
+                    transformedSourceClass,
+                    transformedSourceClass => transformedSourceClass.Target_Id,
+                    transformedSourceClass => transformedSourceClass.Target_ParentId,
+                    (transformedSourceClass, children) => transformedSourceClass.Children = children
+                    );
 
-            In this code, function parameters are for:
-            - transformedSourceClass : list of target class for tree data
-            - transformedSourceClass => transformedSourceClass.Target_Id : Id accessor for our TargetClass to determin which is Id field in our class (may have different name)
-            - transformedSourceClass => transformedSourceClass.Target_ParentId: Parent Id accessor for identify property based on what our generator generates tree  (may have different name)
-            - (transformedSourceClass, children) => transformedSourceClass.Children = children: Identifies property of children (may have different name) to generate generations
+            // In this code, function parameters are for:
+            //- transformedSourceClass : list of target class for tree data
+            //- transformedSourceClass => transformedSourceClass.Target_Id : Id accessor for our TargetClass to determin which is Id field in our class (may have different name)
+            //- transformedSourceClass => transformedSourceClass.Target_ParentId: Parent Id accessor for identify property based on what our generator generates tree  (may have different name)
+            //- (transformedSourceClass, children) => transformedSourceClass.Children = children: Identifies property of children (may have different name) to generate generations
 
-            We also have additional parameters like sortIndexAccessor and maxDepth
-                - sortIndexAccessor if we have sortIndex or we want our data to be sorted based on any property, our call will be like:
-                ```csharp
+            //We also have additional parameters like sortIndexAccessor and maxDepth
+                //- sortIndexAccessor if we have sortIndex or we want our data to be sorted based on any property, our call will be like:
+               
                     var tree = GeneriTree.TreeBuilder.GenerateMultilevelTree.Generate<TargetClass>(
                         transformedSourceClass,
                         transformedSourceClass => transformedSourceClass.Target_Id,
@@ -104,10 +104,10 @@ A brief description of what the project does.
                         (transformedSourceClass, children) => transformedSourceClass.Children = children,
                         transformedSourceClass => transformedSourceClass.Target_Id,
                         );
-                ```
-                Now our generations will be sorted based on Id.
-                - maxDepth with default value 100 makes class to generate 100 level of generations. If you want any specific level generation and not make code slower for now reason, just specify number
-                    ```csharp
+              
+                //Now our generations will be sorted based on Id.
+                /*- maxDepth with default value 100 makes class to generate 100 level of generations. If you want any specific level generation and not make code slower for now reason, just specify number*/
+                    
                         var tree = GeneriTree.TreeBuilder.GenerateMultilevelTree.Generate<TargetClass>(
                             transformedSourceClass,
                             transformedSourceClass => transformedSourceClass.Target_Id,
@@ -116,15 +116,15 @@ A brief description of what the project does.
                             transformedSourceClass => transformedSourceClass.Target_Id,
                             maxDepth: 4
                             );
-                    ```
-    2. When data locates in different classes. Everything will be same, just we will have SourceClass1, SourceClass2
-        a. We will transform each of them to 1 target class
+                    
+    //2. When data locates in different classes. Everything will be same, just we will have SourceClass1, SourceClass2
+        //a. We will transform each of them to 1 target class
             List<TargetClass> transformedSourceClass1 = (List<TargetClass>)DataTreeGenerator.TranformObject<SourceClass1,TargetClass>(sourceClassList1, propsDictionaryForSourceClass1);
             List<TargetClass> transformedSourceClass2 = (List<TargetClass>)DataTreeGenerator.TranformObject<SourceClass2,TargetClass>(sourceClassList2, propsDictionaryForSourceClass2);
 
-            after that union separated lists transformedSourceClass1.Add(transformedSourceClass2);
+            //after that union separated lists transformedSourceClass1.Add(transformedSourceClass2);
 
-            and then everything will be same as on 1.f ( Finally, when we have data which is suitable for our tree generator.) stage
+            //and then everything will be same as on 1.f ( Finally, when we have data which is suitable for our tree generator.) stage
 
 
 ## Features
