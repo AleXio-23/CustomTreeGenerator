@@ -1,6 +1,6 @@
 # Project Title
 
-[![Build Status]](#GeneriTree)
+  #GeneriTree
 
 A brief description of what the project does.
 
